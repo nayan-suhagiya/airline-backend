@@ -76,7 +76,24 @@ const loginUser = async (req, res) => {
   }
 };
 
-export default { registerUser, loginUser };
+const getValidUser = async (req, res) => {
+  try {
+    // console.log(req.body);
+    resModel.status = 200;
+    resModel.msg = "Valid user found";
+    resModel.data = [req.user];
+
+    res.status(resModel.status).json(resModel);
+  } catch (error) {
+    resModel.status = 400;
+    resModel.msg = error.message;
+    resModel.data = [error.fields];
+
+    res.status(resModel.status).json(resModel);
+  }
+};
+
+export default { registerUser, loginUser, getValidUser };
 
 // {
 //     "message": "Valid user found",
