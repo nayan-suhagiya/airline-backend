@@ -19,7 +19,7 @@ const addFlight = async (req, res) => {
 
     resModel.msg = "Flight added successfully!";
     resModel.status = 200;
-    resModel.data = [flight];
+    resModel.data = flight;
     res.status(resModel.status).json(resModel);
   } catch (error) {
     resModel.msg = error.message;
