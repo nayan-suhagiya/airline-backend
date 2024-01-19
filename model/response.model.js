@@ -1,7 +1,7 @@
 const ResponseModel = {
   msg: "",
   status: 0,
-  data: [],
+  data: [] | {},
 };
 
 export default ResponseModel;

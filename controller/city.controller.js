@@ -30,4 +30,20 @@ const addCity = async (req, res) => {
   }
 };
 
-export default { addCity };
+const getCities = async (req, res) => {
+  try {
+    const cities = await City.findAll();
+
+    resModel.msg = "Cities fetched successfully!";
+    resModel.status = 200;
+    resModel.data = cities;
+    res.status(resModel.status).json(resModel);
+  } catch (error) {
+    resModel.msg = error.message;
+    resModel.status = 500;
+    resModel.data = [];
+    res.status(resModel.status).json(resModel);
+  }
+};
+
+export default { addCity, getCities };
