@@ -19,7 +19,7 @@ const addCity = async (req, res) => {
 
     resModel.msg = "City added successfully!";
     resModel.status = 200;
-    resModel.data = [city];
+    resModel.data = city;
     res.status(resModel.status).json(resModel);
     return;
   } catch (error) {

@@ -20,7 +20,7 @@ const registerUser = async (req, res) => {
 
     resModel.status = 201;
     resModel.msg = "User registration successfully";
-    resModel.data = [{ name: user.name, email: user.email }];
+    resModel.data = { name: user.name, email: user.email };
 
     res.status(resModel.status).json(resModel);
   } catch (error) {
@@ -38,7 +38,7 @@ const loginUser = async (req, res) => {
 
     const user = await User.findOne({ where: { email: data.email } });
 
-    console.log("user fetched successfully in login api >>>>>>>",user);
+    console.log("user fetched successfully in login api >>>>>>>", user);
 
     if (!user) {
       resModel.status = 404;
@@ -64,7 +64,7 @@ const loginUser = async (req, res) => {
 
     resModel.status = 200;
     resModel.msg = "User login successfully";
-    resModel.data = [{ isAdmin: user.isAdmin, email: user.email, token }];
+    resModel.data = { isAdmin: user.isAdmin, email: user.email, token };
 
     res.status(resModel.status).json(resModel);
   } catch (error) {
