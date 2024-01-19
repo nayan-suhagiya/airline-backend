@@ -38,7 +38,7 @@ const loginUser = async (req, res) => {
 
     const user = await User.findOne({ where: { email: data.email } });
 
-    // console.log(user);
+    console.log("user fetched successfully in login api >>>>>>>",user);
 
     if (!user) {
       resModel.status = 404;
