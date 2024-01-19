@@ -7,7 +7,16 @@ let resModel = ResponseModel;
 const Auth = async (req, res, next) => {
   try {
     var dateNow = new Date();
-    const token = req.header("Authorization").split(" ")[1];
+    const authToken = req.header("Authorization");
+    if (!authToken) {
+      resModel.status = 401;
+      resModel.msg = "Access denied";
+      resModel.data = [];
+
+      res.status(resModel.status).json(resModel);
+      return;
+    }
+    const token = authToken.split(" ")[1];
     // console.log(token);
     const decode = await jwt.verify(token, process.env.JWT_SECRET);
     // console.log(decode);
