@@ -5,8 +5,11 @@ import "./db/db.config.js";
 import authRouter from "./router/auth.routes.js";
 import cityRouter from "./router/city.routes.js";
 import Auth from "./middleware/auth.middleware.js";
+import cors from "cors";
 
 const app = express();
+app.use(cors())
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
