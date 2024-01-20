@@ -20,7 +20,7 @@ const registerUser = async (req, res) => {
 
     resModel.status = 201;
     resModel.msg = "User registration successfully";
-    resModel.data = [{ name: user.name, email: user.email }];
+    resModel.data = { name: user.name, email: user.email };
 
     res.status(resModel.status).json(resModel);
   } catch (error) {
