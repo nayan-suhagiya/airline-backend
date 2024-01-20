@@ -20,7 +20,7 @@ const Auth = async (req, res, next) => {
     // console.log(token);
     const decode = await jwt.verify(token, process.env.JWT_SECRET);
     // console.log(decode);
-    // console.log(decode.exp < dateNow.getTime() - decode.iat);
+    // console.log(dateNow.getTime() / 1000);
     if (decode.exp < dateNow.getTime() / 1000) {
       resModel.status = 400;
       resModel.msg = "Token expired";

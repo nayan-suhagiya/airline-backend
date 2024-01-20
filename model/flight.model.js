@@ -8,12 +8,12 @@ const Flight = sequelize.define("flight", {
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
   },
-  flightName: {
+  flightNumber: {
     type: Sequelize.STRING,
-    unique: true,
     allowNull: false,
+    unique: true,
   },
-  sourceID: {
+  departureID: {
     type: Sequelize.UUID,
     allowNull: false,
   },
@@ -21,11 +21,19 @@ const Flight = sequelize.define("flight", {
     type: Sequelize.UUID,
     allowNull: false,
   },
+  departureTime: {
+    type: Sequelize.DATE,
+    allowNull: false,
+  },
   arrivalTime: {
     type: Sequelize.DATE,
     allowNull: false,
   },
-  estimatedTravellingHour: {
+  totalCapacity: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  availableSeats: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
@@ -33,14 +41,14 @@ const Flight = sequelize.define("flight", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  fare: {
+  baseFare: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
 });
 
-Flight.belongsTo(City, { foreignKey: "sourceID" });
-Flight.belongsTo(City, { foreignKey: "destinationID" });
+Flight.belongsTo(City, { foreignKey: "departureID", targetKey: "id" });
+Flight.belongsTo(City, { foreignKey: "destinationID", targetKey: "id" });
 
 Flight.sync();
 

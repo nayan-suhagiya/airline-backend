@@ -1,11 +1,19 @@
 import Flight from "../model/flight.model.js";
 import ResponseModel from "../model/response.model.js";
+import checkUserRole from "../utils/checkUser.util.js";
 
 let resModel = ResponseModel;
 
 const addFlight = async (req, res) => {
   try {
     const data = req.body;
+
+    let checkUserRes = checkUserRole(req.user);
+    if (checkUserRes) {
+      resModel = checkUserRes;
+      res.status(resModel.status).json(resModel);
+      return;
+    }
 
     const flight = await Flight.create({
       flightName: data.flightName,
