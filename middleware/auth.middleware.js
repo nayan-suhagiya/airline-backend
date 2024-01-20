@@ -8,6 +8,7 @@ const Auth = async (req, res, next) => {
   try {
     var dateNow = new Date();
     const authToken = req.header("Authorization");
+    // console.log(authToken);
     if (!authToken) {
       resModel.status = 401;
       resModel.msg = "Access denied";
@@ -18,7 +19,7 @@ const Auth = async (req, res, next) => {
     }
     const token = authToken.split(" ")[1];
     // console.log(token);
-    const decode = await jwt.verify(token, process.env.JWT_SECRET);
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
     // console.log(decode);
     // console.log(decode.exp < dateNow.getTime() - decode.iat);
     if (decode.exp < dateNow.getTime() / 1000) {

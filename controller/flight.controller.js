@@ -6,15 +6,25 @@ let resModel = ResponseModel;
 const addFlight = async (req, res) => {
   try {
     const data = req.body;
+    // console.log(data);
+
+    let checkUserRes = checkUserRole(req.user);
+    if (checkUserRes) {
+      resModel = checkUserRes;
+      res.status(resModel.status).json(resModel);
+      return;
+    }
 
     const flight = await Flight.create({
-      flightName: data.flightName,
-      sourceID: data.sourceID,
+      flightNumber: data.flightNumber,
+      departureID: data.departureID,
       destinationID: data.destinationID,
+      departureTime: data.departureTime,
       arrivalTime: data.arrivalTime,
-      estimatedTravellingHour: data.estimatedTravellingHour,
+      totalCapacity: data.totalCapacity,
+      availableSeats: data.availableSeats,
       classType: data.classType,
-      fare: data.fare,
+      baseFare: data.baseFare,
     });
 
     resModel.msg = "Flight added successfully!";
