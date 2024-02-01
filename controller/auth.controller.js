@@ -63,10 +63,15 @@ const loginUser = async (req, res) => {
     const token = await generateAuthToken({ id: user.id, email: user.email });
 
     resModel.status = 200;
-    resModel.msg = "User login successfully";
+    resModel.msg = "Login successfully";
     resModel.data = { isAdmin: user.isAdmin, email: user.email, token: token };
 
-    res.status(resModel.status).json(resModel);
+    res.status(resModel.status).json({
+      isAdmin: user.isAdmin,
+      email: user.email,
+      token: token,
+      msg: "Login successfully",
+    });
   } catch (error) {
     resModel.status = 400;
     resModel.msg = error.message;
