@@ -60,7 +60,7 @@ const loginUser = async (req, res) => {
       return;
     }
 
-    const token = await generateAuthToken({ id: user.id, email: user.email });
+    const token = await generateAuthToken({ id: user.id, email: user.email,isAdmin: user.isAdmin, name: user.name});
 
     resModel.status = 200;
     resModel.msg = "Login successfully";
