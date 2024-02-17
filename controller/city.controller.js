@@ -46,4 +46,61 @@ const getCities = async (req, res) => {
   }
 };
 
-export default { addCity, getCities };
+const editCity = async (req, res) => {
+  try {
+    let checkUserRes = checkUserRole(req.user);
+    if (checkUserRes) {
+      resModel = checkUserRes;
+      res.status(resModel.status).json(resModel);
+      return;
+    }
+
+    const cityid = req.params.id;
+    const data = req.body;
+
+
+    await City.update(
+      { cityName: data.cityName },
+      { where: { id: cityid } }
+    );
+
+    const updatedCity = await City.findByPk(cityid);
+
+    resModel.msg = "City updated successfully!";
+    resModel.status = 200;
+    resModel.data = updatedCity;
+    res.status(resModel.status).json(resModel);
+  } catch (error) {
+    resModel.msg = error.message;
+    resModel.status = 500;
+    resModel.data = [];
+    res.status(resModel.status).json(resModel);
+  }
+}
+
+const deleteCity = async (req, res) => {
+  try {
+    let checkUserRes = checkUserRole(req.user);
+    if (checkUserRes) {
+      resModel = checkUserRes;
+      res.status(resModel.status).json(resModel);
+      return;
+    }
+
+    const cityid = req.params.id;
+
+    await City.destroy({ where: { id: cityid } });
+
+    resModel.msg = "City deleted successfully!";
+    resModel.status = 200;
+    resModel.data = [{ deletedCityId: cityid }];
+    res.status(resModel.status).json(resModel);
+  } catch (error) {
+    resModel.msg = error.message;
+    resModel.status = 500;
+    resModel.data = [];
+    res.status(resModel.status).json(resModel);
+  }
+}
+
+export default { addCity, getCities, editCity, deleteCity };
