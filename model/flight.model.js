@@ -47,8 +47,8 @@ const Flight = sequelize.define("flight", {
   },
 });
 
-Flight.belongsTo(City, { foreignKey: "departureID", targetKey: "id" });
-Flight.belongsTo(City, { foreignKey: "destinationID", targetKey: "id" });
+Flight.belongsTo(City, { foreignKey: "departureID", as: 'departureCity', targetKey: "id" });
+Flight.belongsTo(City, { foreignKey: "destinationID", as: 'destinationCity', targetKey: "id" });
 
 Flight.sync();
 
