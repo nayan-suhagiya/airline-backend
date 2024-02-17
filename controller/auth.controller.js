@@ -60,10 +60,15 @@ const loginUser = async (req, res) => {
       return;
     }
 
-    const token = await generateAuthToken({ id: user.id, email: user.email,isAdmin: user.isAdmin, name: user.name});
+    const token = await generateAuthToken({
+      id: user.id,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      name: user.name,
+    });
 
     resModel.status = 200;
-    resModel.msg = "User login successfully";
+    resModel.msg = "Login successfully";
     resModel.data = { isAdmin: user.isAdmin, email: user.email, token: token };
 
     res.status(resModel.status).json(resModel);
