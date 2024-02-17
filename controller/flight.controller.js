@@ -33,6 +33,7 @@ const addFlight = async (req, res) => {
     resModel.data = flight;
     res.status(resModel.status).json(resModel);
   } catch (error) {
+    console.log(error);
     resModel.msg = error.message;
     resModel.status = 500;
     resModel.data = [];
