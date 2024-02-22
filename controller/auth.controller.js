@@ -69,7 +69,12 @@ const loginUser = async (req, res) => {
 
     resModel.status = 200;
     resModel.msg = "Login successfully";
-    resModel.data = { isAdmin: user.isAdmin, email: user.email, token: token };
+    resModel.data = {
+      isAdmin: user.isAdmin,
+      email: user.email,
+      token: token,
+      id: user.id,
+    };
 
     res.status(resModel.status).json(resModel);
   } catch (error) {

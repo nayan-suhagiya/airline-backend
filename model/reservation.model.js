@@ -14,7 +14,7 @@ const Reservation = sequelize.define("reservation", {
     type: Sequelize.UUID,
     allowNull: false,
   },
-  journyDate: {
+  journeyDate: {
     type: Sequelize.DATE,
     allowNull: false,
   },

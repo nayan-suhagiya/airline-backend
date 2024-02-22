@@ -13,6 +13,10 @@ const Flight = sequelize.define("flight", {
     allowNull: false,
     unique: true,
   },
+  journeyDate: {
+    type: Sequelize.DATE,
+    allowNull: false,
+  },
   departureID: {
     type: Sequelize.UUID,
     allowNull: false,
@@ -47,8 +51,16 @@ const Flight = sequelize.define("flight", {
   },
 });
 
-Flight.belongsTo(City, { foreignKey: "departureID", as: 'departureCity', targetKey: "id" });
-Flight.belongsTo(City, { foreignKey: "destinationID", as: 'destinationCity', targetKey: "id" });
+Flight.belongsTo(City, {
+  foreignKey: "departureID",
+  as: "departureCity",
+  targetKey: "id",
+});
+Flight.belongsTo(City, {
+  foreignKey: "destinationID",
+  as: "destinationCity",
+  targetKey: "id",
+});
 
 Flight.sync();
 

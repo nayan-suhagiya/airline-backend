@@ -19,6 +19,7 @@ const addFlight = async (req, res) => {
 
     const flight = await Flight.create({
       flightNumber: data.flightNumber,
+      journeyDate: data.journeyDate,
       departureID: data.departureID,
       destinationID: data.destinationID,
       departureTime: data.departureTime,
@@ -46,9 +47,9 @@ const getAllFlights = async (req, res) => {
   try {
     const flights = await Flight.findAll({
       include: [
-        { model: City, as: 'departureCity', attributes: ['cityName'] },
-        { model: City, as: 'destinationCity', attributes: ['cityName'] }
-      ]
+        { model: City, as: "departureCity", attributes: ["cityName"] },
+        { model: City, as: "destinationCity", attributes: ["cityName"] },
+      ],
     });
 
     resModel.msg = "All flights fetched successfully!";
@@ -64,7 +65,31 @@ const getAllFlights = async (req, res) => {
   }
 };
 
+const getFlight = async (req, res) => {
+  try {
+    const flightId = req.params.id;
+    const flight = await Flight.findByPk(flightId);
 
+    if (!flight) {
+      resModel.msg = "Flight not found!";
+      resModel.status = 404;
+      resModel.data = [];
+      res.status(resModel.status).json(resModel);
+      return;
+    }
+
+    resModel.msg = "Flight data founded successfully!";
+    resModel.status = 200;
+    resModel.data = flight;
+    res.status(resModel.status).json(resModel);
+  } catch (error) {
+    resModel.msg = error.message;
+    resModel.status = 500;
+    resModel.data = [];
+
+    res.status(resModel.status).json(resModel);
+  }
+};
 
 const editFlight = async (req, res) => {
   try {
@@ -91,6 +116,7 @@ const editFlight = async (req, res) => {
     const UpdatedFlight = await Flight.update(
       {
         flightNumber: data.flightNumber ?? flight.flightNumber,
+        journeyDate: data.journeyDate ?? flight.journeyDate,
         departureID: data.departureID,
         destinationID: data.destinationID,
         departureTime: data.departureTime,
@@ -103,7 +129,7 @@ const editFlight = async (req, res) => {
       { where: { id: req.params.id } }
     );
 
-    if(UpdatedFlight){
+    if (UpdatedFlight) {
       flight = await Flight.findByPk(req.params.id);
     }
 
@@ -117,7 +143,7 @@ const editFlight = async (req, res) => {
     resModel.data = [];
     res.status(resModel.status).json(resModel);
   }
-}
+};
 
 const deleteFlight = async (req, res) => {
   try {
@@ -151,6 +177,12 @@ const deleteFlight = async (req, res) => {
     resModel.data = [];
     res.status(resModel.status).json(resModel);
   }
-}
+};
 
-export default { addFlight, getAllFlights,editFlight,deleteFlight };
+export default {
+  addFlight,
+  getAllFlights,
+  getFlight,
+  editFlight,
+  deleteFlight,
+};

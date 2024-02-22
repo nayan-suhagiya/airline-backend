@@ -8,7 +8,7 @@ const bookReservation = async (req, res) => {
     const data = req.body;
     const reservation = await Reservation.create({
       flightID: data.flightID,
-      journyDate: data.journyDate,
+      journeyDate: data.journeyDate,
       userID: req.user.id,
     });
 
