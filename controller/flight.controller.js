@@ -44,15 +44,43 @@ const addFlight = async (req, res) => {
 };
 
 const getAllFlights = async (req, res) => {
+  const { departureId, destinationId, journeyDate,returnDate} = req.query;
+
   try {
-    const flights = await Flight.findAll({
+    let filterOptions = {};
+
+    if (departureId) {
+      filterOptions.departureId = departureId;
+    }
+
+    if (destinationId) {
+      filterOptions.destinationId = destinationId;
+    }
+
+    let flights = await Flight.findAll({
       include: [
         { model: City, as: "departureCity", attributes: ["cityName"] },
         { model: City, as: "destinationCity", attributes: ["cityName"] },
       ],
+      where: filterOptions
     });
 
-    resModel.msg = "All flights fetched successfully!";
+    if(journeyDate) {
+      flights = flights.filter((flight) => {
+        const compareDate = flight.dataValues.journeyDate.toISOString().split('T')[0];
+        return compareDate === journeyDate;
+      });
+    }
+
+    if(returnDate) {
+      flights = flights.filter((flight) => {
+        const compareDate = flight.dataValues.journeyDate.toISOString().split('T')[0];
+        return compareDate === returnDate;
+      });
+    }
+
+
+    resModel.msg = "Filtered flights fetched successfully!";
     resModel.status = 200;
     resModel.data = flights;
     res.status(resModel.status).json(resModel);
