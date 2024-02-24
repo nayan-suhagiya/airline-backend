@@ -66,6 +66,11 @@ const loginUser = async (req, res) => {
       isAdmin: user.isAdmin,
       name: user.name,
     });
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    });
 
     resModel.status = 200;
     resModel.msg = "Login successfully";

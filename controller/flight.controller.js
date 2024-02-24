@@ -91,6 +91,34 @@ const getFlight = async (req, res) => {
   }
 };
 
+const searchFlight = async (req, res) => {
+  try {
+    const fromID = req.params.fromID;
+    const toID = req.params.toID;
+    const journeyDate = req.params.journeyDate;
+
+    const flights = await Flight.findAll({
+      where: {
+        departureID: fromID,
+        destinationID: toID,
+        journeyDate: journeyDate,
+      },
+    });
+
+    resModel.msg = "Flights fetched successfully!";
+    resModel.status = 200;
+    resModel.data = flights;
+
+    res.status(resModel.status).json(resModel);
+  } catch (error) {
+    resModel.msg = error.message;
+    resModel.status = 500;
+    resModel.data = [];
+
+    res.status(resModel.status).json(resModel);
+  }
+};
+
 const editFlight = async (req, res) => {
   try {
     const data = req.body;
@@ -183,6 +211,7 @@ export default {
   addFlight,
   getAllFlights,
   getFlight,
+  searchFlight,
   editFlight,
   deleteFlight,
 };

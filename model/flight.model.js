@@ -14,7 +14,7 @@ const Flight = sequelize.define("flight", {
     unique: true,
   },
   journeyDate: {
-    type: Sequelize.DATE,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   departureID: {
