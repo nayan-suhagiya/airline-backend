@@ -2,6 +2,7 @@ import Flight from "../model/flight.model.js";
 import ResponseModel from "../model/response.model.js";
 import checkUserRole from "../utils/checkUser.util.js";
 import City from "../model/city.model.js";
+import dateFormater from "../utils/dateFormater.js";
 
 let resModel = ResponseModel;
 
@@ -44,7 +45,7 @@ const addFlight = async (req, res) => {
 };
 
 const getAllFlights = async (req, res) => {
-  const { departureId, destinationId, journeyDate,returnDate} = req.query;
+  const { departureId, destinationId, journeyDate, returnDate } = req.query;
 
   try {
     let filterOptions = {};
@@ -62,23 +63,32 @@ const getAllFlights = async (req, res) => {
         { model: City, as: "departureCity", attributes: ["cityName"] },
         { model: City, as: "destinationCity", attributes: ["cityName"] },
       ],
-      where: filterOptions
+      where: filterOptions,
     });
 
-    if(journeyDate) {
+    flights = flights.map((flight) => flight.toJSON());
+
+    flights = flights.map((flight) => {
+      flight.journeyDate = dateFormater.getDateOnly(flight.journeyDate);
+      flight.departureTime = dateFormater.UtcToLocal(flight.departureTime);
+      flight.arrivalTime = dateFormater.UtcToLocal(flight.arrivalTime);
+      return flight;
+    });
+
+
+    if (journeyDate) {
       flights = flights.filter((flight) => {
-        const compareDate = flight.dataValues.journeyDate.toISOString().split('T')[0];
+        const compareDate = dateFormater.getDateInFormate(flight.journeyDate);
         return compareDate === journeyDate;
       });
     }
 
-    if(returnDate) {
+    if (returnDate) {
       flights = flights.filter((flight) => {
-        const compareDate = flight.dataValues.journeyDate.toISOString().split('T')[0];
+        const compareDate = dateFormater.getDateInFormate(flight.journeyDate);
         return compareDate === returnDate;
       });
     }
-
 
     resModel.msg = "Filtered flights fetched successfully!";
     resModel.status = 200;
